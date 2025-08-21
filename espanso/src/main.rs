@@ -39,6 +39,7 @@ use crate::{
 
 mod capabilities;
 mod cli;
+mod no_launcher;
 mod common_flags;
 mod config;
 mod exit_code;
@@ -71,6 +72,7 @@ static CLI_HANDLERS: LazyLock<Vec<CliModule>> = LazyLock::new(|| {
         cli::package::new(),
         cli::match_cli::new(),
         cli::cmd::new(),
+        cli::no_launcher::new(),
     ]
 });
 
@@ -115,6 +117,14 @@ fn main() {
         .takes_value(true)
         .hidden(true)
         .help("Specify a custom path for the espanso runtime directory"),
+    )
+    .subcommand(
+    SubCommand::with_name("no-launcher")
+        .about("Setup Espanso defaults without launcher GUI")
+        .subcommand(
+            SubCommand::with_name("defaults")
+                .about("Register Espanso service and add to PATH")
+        )
     )
     .subcommand(
       SubCommand::with_name("env-path")
